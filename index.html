@@ -8,7 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'IBM Plex Mono','Courier New',monospace;background:#f4efe6;color:#4a3f34;min-height:100vh;overflow-x:hidden}
+        html{overscroll-behavior:none}
+        body{font-family:'IBM Plex Mono','Courier New',monospace;background:#f4efe6;color:#4a3f34;min-height:100vh;overflow-x:hidden;overscroll-behavior:none}
         body::before{content:'';position:fixed;inset:0;opacity:.035;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none;z-index:999}
         #page{max-width:680px;margin:0 auto;padding:40px 24px 0;position:relative;z-index:1}
         .output{margin-bottom:28px;font-size:13px;line-height:1.8}
