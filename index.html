@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rijo George</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'IBM Plex Mono','Courier New',monospace;background:#f4efe6;color:#4a3f34;min-height:100vh;overflow-x:hidden}
+        body::before{content:'';position:fixed;inset:0;opacity:.035;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none;z-index:999}
+        #terminal{max-width:680px;margin:0 auto;padding:40px 24px 60px;position:relative;z-index:1}
+        .prompt{color:#8a7a68;margin-bottom:2px;font-size:13px}
+        .prompt .at{color:#c06830}
+        .prompt .path{color:#999}
+        .output{margin-bottom:28px;font-size:13px;line-height:1.8}
+        .output a{color:#c06830;text-decoration:none;border-bottom:1px solid rgba(192,104,48,.2);transition:border-color .3s}
+        .output a:hover{border-color:#c06830}
+        .muted{color:#999}
+        .dim{color:#bbb}
+        .accent{color:#c06830}
+        .cursor{display:inline-block;width:7px;height:14px;background:#c06830;animation:blink 1.2s step-end infinite;vertical-align:middle;margin-left:2px}
+        @keyframes blink{50%{opacity:0}}
+        /* App grid */
+        .apps{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:8px 0}
+        .app{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:rgba(0,0,0,.02);border:1px solid rgba(0,0,0,.04);text-decoration:none;color:#4a3f34;transition:all .25s}
+        .app:hover{background:rgba(192,104,48,.06);border-color:rgba(192,104,48,.12);transform:translateX(2px)}
+        .app .ico{width:32px;height:32px;background:#1a1410;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .app .ico svg{width:16px;height:16px}
+        .app .name{font-size:12px;font-weight:600}
+        .app .desc{font-size:10px;color:#999;margin-top:1px}
+        /* Section dividers */
+        .sep{color:#ddd;margin:4px 0;font-size:12px;user-select:none}
+        /* Links row */
+        .links{display:flex;gap:16px;margin:4px 0}
+        .links a{font-size:12px}
+        @media(max-width:540px){.apps{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <div id="terminal">
+
+        <div class="prompt">rijo<span class="at">@</span>earth <span class="path">~</span></div>
+        <div class="output">
+            <strong>Rijo George</strong><br>
+            <span class="muted">cofounder</span> <a href="https://42square.in">42Square</a><br>
+            <span class="muted">builds small tools that do one thing well</span>
+        </div>
+
+        <div class="prompt">rijo<span class="at">@</span>earth <span class="path">~</span> cat philosophy.txt</div>
+        <div class="output">
+            <span class="muted">Nothing means anything by default. That's not</span><br>
+            <span class="muted">depressing — it's permission. You get to decide</span><br>
+            <span class="muted">what matters. Make things. Own your tools.</span><br>
+            <span class="muted">Don't rent your life from someone else's platform.</span>
+        </div>
+
+        <div class="prompt">rijo<span class="at">@</span>earth <span class="path">~</span> ls apps/</div>
+        <div class="output">
+            <div class="apps">
+                <a href="https://rijo-george.github.io/trigger/" class="app">
+                    <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#d2783c" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+                    <div><div class="name">Trigger</div><div class="desc">intention engine in your notch</div></div>
+                </a>
+                <a href="https://rijo-george.github.io/waiting-room/" class="app">
+                    <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#d2783c" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                    <div><div class="name">The Waiting Room</div><div class="desc">track every open loop</div></div>
+                </a>
+                <a href="https://rijo-george.github.io/whispnote/" class="app">
+                    <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#d2783c" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                    <div><div class="name">WhispNote</div><div class="desc">notes that disappear</div></div>
+                </a>
+                <a href="https://rijo-george.github.io/shelfie/" class="app">
+                    <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#d2783c" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+                    <div><div class="name">Shelfie</div><div class="desc">drag-and-drop holding shelf</div></div>
+                </a>
+                <a href="https://rijo-george.github.io/plain-paste/" class="app">
+                    <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#d2783c" stroke-width="2"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/></svg></div>
+                    <div><div class="name">Plain Paste</div><div class="desc">strip formatting from paste</div></div>
+                </a>
+                <a href="https://rijo-george.github.io/typing-stats/" class="app">
+                    <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#d2783c" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+                    <div><div class="name">Typing Stats</div><div class="desc">know how you type</div></div>
+                </a>
+                <a href="https://rijo-george.github.io/clack/" class="app">
+                    <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#d2783c" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/></svg></div>
+                    <div><div class="name">Clack</div><div class="desc">mechanical keyboard sounds</div></div>
+                </a>
+            </div>
+        </div>
+
+        <div class="prompt">rijo<span class="at">@</span>earth <span class="path">~</span> cat links.txt</div>
+        <div class="output">
+            <div class="links">
+                <a href="https://github.com/rijo-george">github</a>
+                <a href="https://linkedin.com/in/rijo-george">linkedin</a>
+                <a href="https://42square.in">42square</a>
+            </div>
+        </div>
+
+        <div class="prompt">rijo<span class="at">@</span>earth <span class="path">~</span> <span class="cursor"></span></div>
+
+    </div>
+
+    <script>
+        // Typewriter reveal effect
+        const blocks = document.querySelectorAll('.output');
+        blocks.forEach((block, i) => {
+            block.style.opacity = '0';
+            block.style.transform = 'translateY(6px)';
+            block.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            setTimeout(() => {
+                block.style.opacity = '1';
+                block.style.transform = 'translateY(0)';
+            }, 200 + i * 250);
+        });
+        // Prompts too
+        const prompts = document.querySelectorAll('.prompt');
+        prompts.forEach((p, i) => {
+            p.style.opacity = '0';
+            p.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => { p.style.opacity = '1'; }, 100 + i * 250);
+        });
+    </script>
+</body>
+</html>
