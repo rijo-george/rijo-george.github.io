@@ -206,13 +206,16 @@
         switch(c) {
             case 'help':
                 addLine(cmd, [
+                    'about       the short version',
+                    'where       location',
+                    'family      home',
+                    'reading     current book',
+                    'beliefs     what I think about things',
                     'ls          list apps',
                     'open [app]  open an app',
-                    'about       who is this guy',
+                    'stack       tools I use',
                     'uptime      time on page',
                     'keys        keystrokes this session',
-                    'date        current date',
-                    'ping        pong',
                     'clear       clear terminal',
                 ].join('\n'));
                 break;
@@ -233,7 +236,62 @@
                 break;
 
             case 'about':
-                addLine(cmd, 'rijo george\ncofounder, 42square\nbuilds tools that scratch his own itch\nbased on the belief that if something annoys you\nyou should fix it, not complain about it');
+                addLine(cmd, 'rijo george\ncofounder, 42square\nkochi, india\nbuilds small tools that do one thing well\nfather of two, husband of one, mass consumer of coffee');
+                break;
+
+            case 'where':
+            case 'location':
+                addLine(cmd, 'kochi, india\nbackwaters, coconut trees, and too much rain\nbut the chai is worth it');
+                break;
+
+            case 'family':
+            case 'home':
+                addLine(cmd, 'sherin  - wife, the reason anything works\nmaryam  - daughter, asks questions I can\'t answer\nadam    - son, breaks things faster than I build them');
+                break;
+
+            case 'reading':
+            case 'book':
+                addLine(cmd, 'the hard thing about hard things - ben horowitz\n\nno formula for building a company.\njust a collection of impossible situations\nand the stubborn refusal to quit.');
+                break;
+
+            case 'beliefs':
+            case 'values':
+            case 'philosophy':
+                addLine(cmd, [
+                    'on life:',
+                    '  nobody hands you meaning. you make it',
+                    '  or you don\'t. both are fine.',
+                    '',
+                    'on work:',
+                    '  ship things. real things. not decks.',
+                    '  a working prototype beats a perfect plan.',
+                    '',
+                    'on love:',
+                    '  show up. every single day.',
+                    '  even when it\'s boring. especially then.',
+                    '',
+                    'on building:',
+                    '  if it annoys you, build the fix.',
+                    '  if nobody asked for it, even better.',
+                    '',
+                    'on innovation:',
+                    '  it\'s not about being first.',
+                    '  it\'s about caring more than the last person who tried.',
+                    '',
+                    'on passion:',
+                    '  you don\'t find it. you notice what',
+                    '  you keep doing when nobody\'s watching.',
+                ].join('\n'));
+                break;
+
+            case 'now':
+                addLine(cmd, 'building native mac apps\nrunning 42square\nraising two tiny humans\ntrying to read more, scroll less');
+                break;
+
+            case 'contact':
+            case 'email':
+            case 'reach':
+                addLine(cmd, '<a href="https://www.linkedin.com/in/rijo">linkedin</a> is the best way.\ni read everything, reply to most.');
                 break;
 
             case 'uptime':
