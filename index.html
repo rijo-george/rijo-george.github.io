@@ -109,7 +109,7 @@
         <div id="term-history"></div>
         <div class="input-line" id="input-row">
             <span>rijo<span class="at">@</span>42square.ai</span>
-            <input type="text" id="cmd-input" autofocus autocomplete="off" spellcheck="false">
+            <input type="text" id="cmd-input" autocomplete="off" spellcheck="false">
         </div>
     </div>
 
@@ -120,7 +120,8 @@
     const input = document.getElementById('cmd-input');
 
     document.addEventListener('keydown', () => keystrokes++);
-    document.addEventListener('click', () => input.focus());
+    // Only focus input when clicking in the terminal area
+    document.getElementById('term').addEventListener('click', () => input.focus());
 
     input.addEventListener('keydown', e => {
         if (e.key === 'Enter') {
