@@ -10,19 +10,13 @@
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'IBM Plex Mono','Courier New',monospace;background:#f4efe6;color:#4a3f34;min-height:100vh;overflow-x:hidden}
         body::before{content:'';position:fixed;inset:0;opacity:.035;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none;z-index:999}
-        #terminal{max-width:680px;margin:0 auto;padding:40px 24px 60px;position:relative;z-index:1}
-        .prompt{color:#8a7a68;margin-bottom:2px;font-size:13px}
-        .prompt .at{color:#c06830}
-        .prompt .path{color:#999}
+        #page{max-width:680px;margin:0 auto;padding:40px 24px 0;position:relative;z-index:1}
         .output{margin-bottom:28px;font-size:13px;line-height:1.8}
         .output a{color:#c06830;text-decoration:none;border-bottom:1px solid rgba(192,104,48,.2);transition:border-color .3s}
         .output a:hover{border-color:#c06830}
         .muted{color:#999}
-        .dim{color:#bbb}
         .accent{color:#c06830}
-        .cursor{display:inline-block;width:7px;height:14px;background:#c06830;animation:blink 1.2s step-end infinite;vertical-align:middle;margin-left:2px}
-        @keyframes blink{50%{opacity:0}}
-        /* App grid */
+        .sep{color:#ddd;margin:4px 0;font-size:12px;user-select:none}
         .apps{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:8px 0}
         .app{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:rgba(0,0,0,.02);border:1px solid rgba(0,0,0,.04);text-decoration:none;color:#4a3f34;transition:all .25s}
         .app:hover{background:rgba(192,104,48,.06);border-color:rgba(192,104,48,.12);transform:translateX(2px)}
@@ -30,17 +24,26 @@
         .app .ico svg{width:16px;height:16px}
         .app .name{font-size:12px;font-weight:600}
         .app .desc{font-size:10px;color:#999;margin-top:1px}
-        /* Section dividers */
-        .sep{color:#ddd;margin:4px 0;font-size:12px;user-select:none}
-        /* Links row */
         .links{display:flex;gap:16px;margin:4px 0}
         .links a{font-size:12px}
         @media(max-width:540px){.apps{grid-template-columns:1fr}}
+
+        /* Terminal */
+        #term{max-width:680px;margin:0 auto;padding:32px 24px 60px;position:relative;z-index:1}
+        #term-history{font-size:13px;line-height:1.8}
+        #term-history .cmd{color:#8a7a68}
+        #term-history .cmd .at{color:#c06830}
+        #term-history .res{color:#999;margin-bottom:12px;white-space:pre-wrap}
+        #term-history .res a{color:#c06830;text-decoration:none}
+        .input-line{display:flex;align-items:center;font-size:13px;color:#8a7a68}
+        .input-line .at{color:#c06830}
+        #cmd-input{background:none;border:none;outline:none;font-family:inherit;font-size:13px;color:#4a3f34;flex:1;caret-color:#c06830;margin-left:6px}
+        .cursor-idle{display:inline-block;width:7px;height:14px;background:#c06830;animation:blink 1.2s step-end infinite;vertical-align:middle;margin-left:2px}
+        @keyframes blink{50%{opacity:0}}
     </style>
 </head>
 <body>
-    <div id="terminal">
-
+    <div id="page">
         <div class="output">
             <strong>Rijo George</strong><br>
             <span class="muted">cofounder</span> <a href="https://www.42square.ai">42Square</a><br>
@@ -99,32 +102,190 @@
                 <a href="https://www.42square.ai">42square</a>
             </div>
         </div>
+    </div>
 
-        <div style="margin-top:32px">
-            <div class="prompt">rijo<span class="at">@</span>42square.ai <span class="cursor"></span></div>
+    <div id="term">
+        <div class="sep">---</div>
+        <div id="term-history"></div>
+        <div class="input-line" id="input-row">
+            <span>rijo<span class="at">@</span>42square.ai</span>
+            <input type="text" id="cmd-input" autofocus autocomplete="off" spellcheck="false">
         </div>
-
     </div>
 
     <script>
-        // Typewriter reveal effect
-        const blocks = document.querySelectorAll('.output');
-        blocks.forEach((block, i) => {
-            block.style.opacity = '0';
-            block.style.transform = 'translateY(6px)';
-            block.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-            setTimeout(() => {
-                block.style.opacity = '1';
-                block.style.transform = 'translateY(0)';
-            }, 200 + i * 250);
-        });
-        // Prompts too
-        const prompts = document.querySelectorAll('.prompt');
-        prompts.forEach((p, i) => {
-            p.style.opacity = '0';
-            p.style.transition = 'opacity 0.3s ease';
-            setTimeout(() => { p.style.opacity = '1'; }, 100 + i * 250);
-        });
+    const startTime = Date.now();
+    let keystrokes = 0;
+    const history = document.getElementById('term-history');
+    const input = document.getElementById('cmd-input');
+
+    document.addEventListener('keydown', () => keystrokes++);
+    document.addEventListener('click', () => input.focus());
+
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+            const cmd = input.value.trim();
+            input.value = '';
+            if (cmd) run(cmd);
+        }
+    });
+
+    function addLine(prompt, response) {
+        const div = document.createElement('div');
+        div.innerHTML = `<div class="cmd">rijo<span class="at">@</span>42square.ai ${esc(prompt)}</div><div class="res">${response}</div>`;
+        history.appendChild(div);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    function esc(s) { return s.replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    const apps = {
+        trigger:    { url: 'https://rijo-george.github.io/trigger/',       desc: 'intention engine in your notch' },
+        waitingroom:{ url: 'https://rijo-george.github.io/waiting-room/',  desc: 'track every open loop' },
+        whispnote:  { url: 'https://rijo-george.github.io/whispnote/',     desc: 'notes that disappear' },
+        shelfie:    { url: 'https://rijo-george.github.io/shelfie/',       desc: 'drag-and-drop holding shelf' },
+        plainpaste: { url: 'https://rijo-george.github.io/plain-paste/',   desc: 'strip formatting from paste' },
+        typingstats:{ url: 'https://rijo-george.github.io/typing-stats/',  desc: 'know how you type' },
+        clack:      { url: 'https://rijo-george.github.io/clack/',         desc: 'mechanical keyboard sounds' },
+    };
+
+    function uptime() {
+        const s = Math.floor((Date.now() - startTime) / 1000);
+        if (s < 60) return s + 's';
+        const m = Math.floor(s / 60);
+        return m + 'm ' + (s % 60) + 's';
+    }
+
+    function run(cmd) {
+        const parts = cmd.toLowerCase().split(/\s+/);
+        const c = parts[0];
+        const arg = parts.slice(1).join(' ');
+
+        switch(c) {
+            case 'help':
+                addLine(cmd, [
+                    'ls          list apps',
+                    'open [app]  open an app',
+                    'about       who is this guy',
+                    'uptime      time on page',
+                    'keys        keystrokes this session',
+                    'date        current date',
+                    'ping        pong',
+                    'clear       clear terminal',
+                ].join('\n'));
+                break;
+
+            case 'ls':
+            case 'apps':
+                addLine(cmd, Object.entries(apps).map(([k,v]) => `  ${k.padEnd(14)} ${v.desc}`).join('\n'));
+                break;
+
+            case 'open':
+                const key = arg.replace(/[\s-]/g,'').toLowerCase();
+                if (apps[key]) {
+                    addLine(cmd, 'opening ' + key + '...');
+                    setTimeout(() => window.open(apps[key].url, '_blank'), 300);
+                } else {
+                    addLine(cmd, arg ? `no app called "${arg}". try: ls` : 'usage: open [app name]');
+                }
+                break;
+
+            case 'about':
+                addLine(cmd, 'rijo george\ncofounder, 42square\nbuilds tools that scratch his own itch\nbased on the belief that if something annoys you\nyou should fix it, not complain about it');
+                break;
+
+            case 'uptime':
+                addLine(cmd, 'you\'ve been here ' + uptime() + '. ' + (keystrokes > 0 ? keystrokes + ' keystrokes.' : 'type something.'));
+                break;
+
+            case 'keys':
+            case 'keystrokes':
+                addLine(cmd, keystrokes + ' keystrokes this session');
+                break;
+
+            case 'date':
+                addLine(cmd, new Date().toString());
+                break;
+
+            case 'ping':
+                addLine(cmd, 'pong');
+                break;
+
+            case 'clear':
+                history.innerHTML = '';
+                break;
+
+            case 'whoami':
+                addLine(cmd, 'a curious visitor');
+                break;
+
+            case 'sudo':
+                addLine(cmd + ' ' + arg, 'nice try');
+                break;
+
+            case 'rm':
+                addLine(cmd + ' ' + arg, 'not on my watch');
+                break;
+
+            case 'vim':
+            case 'nano':
+            case 'emacs':
+                addLine(cmd, 'this is a website, not your editor');
+                break;
+
+            case 'exit':
+            case 'quit':
+                addLine(cmd, 'there is no exit');
+                break;
+
+            case 'cd':
+                addLine(cmd + ' ' + arg, 'you\'re already where you need to be');
+                break;
+
+            case 'curl':
+            case 'wget':
+                addLine(cmd + ' ' + arg, 'you\'re already looking at it');
+                break;
+
+            case 'hi':
+            case 'hello':
+            case 'hey':
+                addLine(cmd, 'hey. type help if you\'re looking around.');
+                break;
+
+            case 'why':
+                addLine(cmd, 'because something was broken and nobody was fixing it');
+                break;
+
+            case 'coffee':
+                addLine(cmd, 'good idea. brb.');
+                break;
+
+            case 'hire':
+                addLine(cmd, 'flattered, but I\'m building things right now.\n<a href="https://www.linkedin.com/in/rijo">linkedin</a> if you want to talk.');
+                break;
+
+            case 'source':
+                addLine(cmd, 'everything is open source.\n<a href="https://github.com/rijo-george">github.com/rijo-george</a>');
+                break;
+
+            case 'stack':
+            case 'tech':
+                addLine(cmd, 'swift, swiftui, appkit\nno electron, no web wrappers\nnative or nothing');
+                break;
+
+            default:
+                addLine(cmd, `command not found: ${esc(c)}. try 'help'`);
+        }
+    }
+
+    // Fade in blocks
+    document.querySelectorAll('#page .output').forEach((b, i) => {
+        b.style.opacity = '0';
+        b.style.transform = 'translateY(6px)';
+        b.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        setTimeout(() => { b.style.opacity = '1'; b.style.transform = 'translateY(0)'; }, 200 + i * 250);
+    });
     </script>
 </body>
 </html>
