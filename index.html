@@ -47,7 +47,7 @@
         #cmd-input{background:none;border:none;outline:none;font-family:inherit;font-size:13px;color:#e0d5c8;flex:1;caret-color:#d2783c;margin-left:6px;padding:0;line-height:20px}
         .block-cursor{display:inline-block;width:7px;height:14px;background:#d2783c;animation:blink 1s step-end infinite;vertical-align:middle;flex-shrink:0;margin-left:6px}
         @keyframes blink{50%{opacity:0}}
-        .term-hint{text-align:center;font-size:10px;color:#bbb;margin-top:10px;opacity:1;transition:opacity .5s}
+        .term-hint{font-size:10px;color:#555;opacity:1;transition:opacity .5s;margin-top:8px}
     </style>
 </head>
 <body>
@@ -127,9 +127,9 @@
                     <span class="block-cursor" id="block-cursor"></span>
                     <input type="text" id="cmd-input" autocomplete="off" spellcheck="false">
                 </div>
+                <div class="term-hint" id="term-hint">type help</div>
             </div>
         </div>
-        <div class="term-hint" id="term-hint">click here and type <strong>help</strong></div>
     </div>
 
     <script>
